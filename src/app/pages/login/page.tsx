@@ -1,9 +1,8 @@
-// app/login/page.js
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import api from '@/app/lib/axios';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,7 +13,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', {
+      const response = await api.post('http://localhost:8080/auth/login', {
         email,
         senha,
       });

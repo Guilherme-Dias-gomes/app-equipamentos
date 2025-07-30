@@ -3,6 +3,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../../components/ProtectedRoute/page';
+import api from '@/app/lib/axios';
+import { jwtDecode } from 'jwt-decode';
+
+interface NovaSolicitacao {
+  titulo: string;
+  descricao: string;
+  status: 'NORMAL' | 'MEDIO' | 'URGENTE';
+}
+
+interface JwtPayload {
+  roles: string[];
+}
 
 export default function NovaSolicitacao() {
   const [titulo, setTitulo] = useState('');
@@ -13,9 +25,30 @@ export default function NovaSolicitacao() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aqui você adicionará a chamada ao POST /solicitacao
-    console.log({ titulo, descricao, status });
-    router.push('/dashboard');
+    try {
+      const response = await api.post('/solicitacao', {
+        titulo,
+        descricao,
+        status,
+      });
+
+      // Decodificar o token para verificar a role
+      const token = localStorage.getItem('token');
+      let redirectPath = '/pages/dashboard';
+      if (token) {
+        const decoded: JwtPayload = jwtDecode(token);
+        const roles = decoded.roles || [];
+        if (roles.includes('ROLE_ADMIN')) {
+          redirectPath = '/pages/admin/dashboard';
+        }
+      }
+
+      console.log('Solicitação criada:', { titulo, descricao, status });
+      router.push(redirectPath);
+    } catch (err) {
+      setError('Ocorreu um problema, tente mais tarde.');
+      console.error('Erro:', err);
+    }
   };
 
   return (
