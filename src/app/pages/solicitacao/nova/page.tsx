@@ -34,12 +34,12 @@ export default function NovaSolicitacao() {
 
       // Decodificar o token para verificar a role
       const token = localStorage.getItem('token');
-      let redirectPath = '/pages/dashboard';
+      let redirectPath = '/pages/dashboard'; // Padrão para ROLE_USER
       if (token) {
         const decoded: JwtPayload = jwtDecode(token);
         const roles = decoded.roles || [];
         if (roles.includes('ROLE_ADMIN')) {
-          redirectPath = '/pages/admin/dashboard';
+          redirectPath = '/pages/adm/dashboard';
         }
       }
 
