@@ -1,31 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import api from '@/app/lib/axios';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/app/lib/axios";
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+  roles: string[];
+}
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await api.post('http://localhost:8080/auth/login', {
+      const response = await api.post("http://localhost:8080/auth/login", {
         email,
         senha,
       });
       const { token } = response.data;
-      
+
       // Armazenar o token no localStorage
-      localStorage.setItem('token', token);
-      
-      // Redirecionar para a página principal após login
-      router.push('/pages/dashboard');
+      localStorage.setItem("token", token);
+
+      const getToken = localStorage.getItem("token");
+      let redirectPath = "/pages/dashboard";
+      if (getToken) {
+        const decoded: JwtPayload = jwtDecode(getToken);
+        const roles = decoded.roles || [];
+        if (roles.includes("ROLE_ADMIN")) {
+          router.push((redirectPath = "adm/dashboard"));
+        }
+      }
+      router.push(redirectPath);
     } catch (err) {
-      setError('Credenciais inválidas. Tente novamente.');
+      setError("Credenciais inválidas. Tente novamente.");
       console.error(err);
     }
   };
@@ -37,7 +50,10 @@ export default function Login() {
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -50,7 +66,10 @@ export default function Login() {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="senha" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="senha"
+              className="block text-sm font-medium text-gray-700"
+            >
               Senha
             </label>
             <input
