@@ -106,7 +106,6 @@ export default function Dashboard() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-200">
-                  {/* <th className="p-2 text-left">Concluída</th> */}
                   <th className="p-2 text-left">ID</th>
                   <th className="p-2 text-left">Título</th>
                   <th className="p-2 text-left">Descrição</th>
@@ -119,14 +118,6 @@ export default function Dashboard() {
               <tbody>
                 {solicitacoes.map((solicitacao) => (
                   <tr key={solicitacao.idSolicitacao} className={`border-t ${solicitacao.concluida ? 'bg-green-100' : ''}`}>
-                    {/* <td className="p-2">
-                      <input
-                        type="checkbox"
-                        checked={solicitacao.concluida}
-                        onChange={() => handleConcluidaChange(solicitacao)}
-                        className="h-5 w-5"
-                      />
-                    </td> */}
                     <td className="p-2">{solicitacao.idSolicitacao}</td>
                     <td className="p-2">{solicitacao.titulo}</td>
                     <td className="p-2">{solicitacao.descricao}</td>
@@ -201,7 +192,8 @@ export default function Dashboard() {
                 <div>
                   CONCLUIDA? <input
                         type="checkbox"
-                        onChange={(e) => setEditConcluido(Boolean(e.target.value))}
+                        checked={editConcluido}
+                        onChange={(e) => setEditConcluido(e.target.checked)}
                         className="h-5 w-5"
                       />
                 </div>

@@ -12,6 +12,7 @@ interface Solicitacao {
   status: 'NORMAL' | 'MEDIO' | 'URGENTE';
   data: string;
   nomeUsuario: string;
+  concluida: boolean;
 }
 
 export default function Dashboard() {
@@ -65,7 +66,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {solicitacoes.map((solicitacao) => (
-                  <tr key={solicitacao.idSolicitacao} className="border-t">
+                  <tr key={solicitacao.idSolicitacao} className={`border-t ${solicitacao.concluida ? 'bg-green-100' : ''}`}>
                     <td className="p-2">{solicitacao.idSolicitacao}</td>
                     <td className="p-2">{solicitacao.titulo}</td>
                     <td className="p-2">{solicitacao.descricao}</td>
