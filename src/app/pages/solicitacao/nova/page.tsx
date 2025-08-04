@@ -34,7 +34,7 @@ export default function NovaSolicitacao() {
 
       // Decodificar o token para verificar a role
       const token = localStorage.getItem('token');
-      let redirectPath = '/pages/dashboard'; // Padrão para ROLE_USER
+      let redirectPath = '/pages/dashboard'; 
       if (token) {
         const decoded: JwtPayload = jwtDecode(token);
         const roles = decoded.roles || [];

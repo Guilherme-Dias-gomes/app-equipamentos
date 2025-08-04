@@ -23,11 +23,12 @@ export default function Dashboard() {
   const [editTitulo, setEditTitulo] = useState('');
   const [editDescricao, setEditDescricao] = useState('');
   const [editStatus, setEditStatus] = useState<'NORMAL' | 'MEDIO' | 'URGENTE'>('NORMAL');
+  const [editConcluido, setEditConcluido] = useState(false);
 
   useEffect(() => {
     const fetchSolicitacoes = async () => {
       try {
-        const response = await api.get('/solicitacao/minhas-solicitacoes');
+        const response = await api.get('/solicitacao');
         console.log('Resposta da API:', response.data);
         setSolicitacoes(response.data);
       } catch (err) {
@@ -40,22 +41,7 @@ export default function Dashboard() {
     fetchSolicitacoes();
   }, []);
 
-  const handleConcluidaChange = async (solicitacao: Solicitacao) => {
-    try {
-      const updatedSolicitacao = { ...solicitacao, concluida: !solicitacao.concluida };
-      await api.put(`/solicitacao/${solicitacao.idSolicitacao}`, {
-        titulo: solicitacao.titulo,
-        descricao: solicitacao.descricao,
-        status: solicitacao.status,
-        concluida: updatedSolicitacao.concluida,
-      });
-      setSolicitacoes(solicitacoes.map(s => s.idSolicitacao === solicitacao.idSolicitacao ? updatedSolicitacao : s));
-      console.log('Solicitação atualizada:', updatedSolicitacao);
-    } catch (err) {
-      setError('Erro ao atualizar solicitação.');
-      console.error('Erro:', err);
-    }
-  };
+
 
   const handleDelete = async (id: number) => {
     if (confirm('Tem certeza que deseja excluir esta solicitação?')) {
@@ -75,6 +61,7 @@ export default function Dashboard() {
     setEditTitulo(solicitacao.titulo);
     setEditDescricao(solicitacao.descricao);
     setEditStatus(solicitacao.status);
+    setEditConcluido(solicitacao.concluida);
   };
 
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +72,7 @@ export default function Dashboard() {
         titulo: editTitulo,
         descricao: editDescricao,
         status: editStatus,
-        concluida: editSolicitacao.concluida,
+        concluida: editConcluido,
       };
       await api.put(`/solicitacao/${editSolicitacao.idSolicitacao}`, updatedSolicitacao);
       setSolicitacoes(solicitacoes.map(s =>
@@ -119,7 +106,7 @@ export default function Dashboard() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="p-2 text-left">Concluída</th>
+                  {/* <th className="p-2 text-left">Concluída</th> */}
                   <th className="p-2 text-left">ID</th>
                   <th className="p-2 text-left">Título</th>
                   <th className="p-2 text-left">Descrição</th>
@@ -132,14 +119,14 @@ export default function Dashboard() {
               <tbody>
                 {solicitacoes.map((solicitacao) => (
                   <tr key={solicitacao.idSolicitacao} className={`border-t ${solicitacao.concluida ? 'bg-green-100' : ''}`}>
-                    <td className="p-2">
+                    {/* <td className="p-2">
                       <input
                         type="checkbox"
                         checked={solicitacao.concluida}
                         onChange={() => handleConcluidaChange(solicitacao)}
                         className="h-5 w-5"
                       />
-                    </td>
+                    </td> */}
                     <td className="p-2">{solicitacao.idSolicitacao}</td>
                     <td className="p-2">{solicitacao.titulo}</td>
                     <td className="p-2">{solicitacao.descricao}</td>
@@ -210,6 +197,13 @@ export default function Dashboard() {
                     <option value="MEDIO">Médio</option>
                     <option value="URGENTE">Urgente</option>
                   </select>
+                </div>
+                <div>
+                  CONCLUIDA? <input
+                        type="checkbox"
+                        onChange={(e) => setEditConcluido(Boolean(e.target.value))}
+                        className="h-5 w-5"
+                      />
                 </div>
                 <div className="flex justify-end">
                   <button
