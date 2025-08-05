@@ -43,7 +43,7 @@ export default function NovaSolicitacao() {
         }
       }
 
-      console.log('Solicitação criada:', { titulo, descricao, status });
+      //console.log('Solicitação criada:', { titulo, descricao, status });
       router.push(redirectPath);
     } catch (err) {
       setError('Ocorreu um problema, tente mais tarde.');

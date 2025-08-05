@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '../../../../components/ProtectedRoute/page';
+import api from '@/app/lib/axios';
 
 export default function NovoUsuario() {
   const [email, setEmail] = useState('');
@@ -15,14 +16,25 @@ export default function NovoUsuario() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aqui você adicionará a chamada ao POST /auth/register
+    try {
+      const response = await api.post('/auth/register', {
+        email,
+        senha,
+        nome,
+        setor,
+        role
+      });
+    } catch (err) {
+        setError('Ocorreu um problema, tente mais tarde.');
+        console.error('Erro:', err);
+    }
     console.log({ email, senha, nome, setor, role });
-    router.push('/admin/dashboard');
+    router.push('/pages/adm/dashboard');
   };
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-blackd">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-blackd text-black">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Criar Novo Usuário</h2>
           {error && <p className="text-red-500 mb-4">{error}</p>}
