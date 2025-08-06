@@ -97,7 +97,10 @@ export default function Dashboard() {
         <Link href="/pages/adm/usuario/novo" className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
           Criar Usuário
         </Link>
-        <Link href="/perfil/senha" className="mb-4 ml-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+        <Link href="/pages/adm/usuario" className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Usuarios
+        </Link>
+        <Link href="/pages/adm/senha" className="mb-4 ml-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
           Alterar Senha
         </Link>
         {loading ? (
