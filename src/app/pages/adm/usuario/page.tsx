@@ -31,13 +31,14 @@ export default function Usuarios() {
   }, []);
 
   const handleEdit = (users: Users) => {
+    setEditUsers(users);
     setEditSenha(users.senha);
   };
 
   const handleDelete = async (id: number) => {
     if (confirm("Tem certeza que deseja excluir este usuário?")) {
       try {
-        await api.delete(`/users/${id}`);
+        await api.delete(`/auth/users/${id}/senha`);
         setUsers(users.filter((s) => s.id !== id));
         console.log("Usuário excluída:", id);
       } catch (err) {
@@ -52,13 +53,14 @@ export default function Usuarios() {
     if (!editUsers) return;
     try {
       const updatedUser = {
-        senha: editSenha
+        novaSenha: editSenha
       };
-      await api.put(`/users/${editUsers.id}`, updatedUser);
+      await api.put(`/auth/users/${editUsers.id}/senha `, updatedUser);
       setUsers(users.map(u =>
-        u.id === editUsers.id ? { ...u, ...updatedUser } : u
+        u.id === editUsers.id ? { ...u, senha: editSenha } : u
       ));
       setEditUsers(null);
+      setEditSenha("");
       console.log('Solicitação editada:', updatedUser);
     } catch (err) {
       setError('Erro ao editar solicitação.');
@@ -68,9 +70,9 @@ export default function Usuarios() {
 
   return (
     <ProtectedRoute>
-      <div>
-        <div className="bg-white rounded shadow-md">
-          <table className="w-full text-black">
+      <div className="text-black">
+        <div className="bg-white rounded shadow-md ">
+          <table className="w-full ">
             <thead>
               <tr className="bg-gray-200">
                 <th className="p-2 text-left">ID</th>
@@ -89,7 +91,7 @@ export default function Usuarios() {
                       onClick={() => handleEdit(users)}
                       className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2"
                     >
-                      Editar
+                      Editar Senha
                     </button>
                     <button
                       onClick={() => handleDelete(users.id)}
