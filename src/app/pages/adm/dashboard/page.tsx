@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import api from '@/app/lib/axios';
-import ProtectedRoute from '@/app/components/ProtectedRoute/page';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import api from "@/app/lib/axios";
+import ProtectedRoute from "@/app/components/ProtectedRoute/page";
+import Header from "@/app/components/header/page";
+import Footer from "@/app/components/footer/page";
 
 interface Solicitacao {
   idSolicitacao: number;
   titulo: string;
   descricao: string;
-  status: 'NORMAL' | 'MEDIO' | 'URGENTE';
+  status: "NORMAL" | "MEDIO" | "URGENTE";
   data: string;
   nomeUsuario: string;
   concluida: boolean;
@@ -17,23 +19,27 @@ interface Solicitacao {
 
 export default function Dashboard() {
   const [solicitacoes, setSolicitacoes] = useState<Solicitacao[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [editSolicitacao, setEditSolicitacao] = useState<Solicitacao | null>(null);
-  const [editTitulo, setEditTitulo] = useState('');
-  const [editDescricao, setEditDescricao] = useState('');
-  const [editStatus, setEditStatus] = useState<'NORMAL' | 'MEDIO' | 'URGENTE'>('NORMAL');
+  const [editSolicitacao, setEditSolicitacao] = useState<Solicitacao | null>(
+    null
+  );
+  const [editTitulo, setEditTitulo] = useState("");
+  const [editDescricao, setEditDescricao] = useState("");
+  const [editStatus, setEditStatus] = useState<"NORMAL" | "MEDIO" | "URGENTE">(
+    "NORMAL"
+  );
   const [editConcluido, setEditConcluido] = useState(false);
 
   useEffect(() => {
     const fetchSolicitacoes = async () => {
       try {
-        const response = await api.get('/solicitacao');
-        console.log('Resposta da API:', response.data);
+        const response = await api.get("/solicitacao");
+        console.log("Resposta da API:", response.data);
         setSolicitacoes(response.data);
       } catch (err) {
-        setError('Erro ao carregar solicitações.');
-        console.error('Erro:', err);
+        setError("Erro ao carregar solicitações.");
+        console.error("Erro:", err);
       } finally {
         setLoading(false);
       }
@@ -41,17 +47,15 @@ export default function Dashboard() {
     fetchSolicitacoes();
   }, []);
 
-
-
   const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir esta solicitação?')) {
+    if (confirm("Tem certeza que deseja excluir esta solicitação?")) {
       try {
         await api.delete(`/solicitacao/${id}`);
-        setSolicitacoes(solicitacoes.filter(s => s.idSolicitacao !== id));
-        console.log('Solicitação excluída:', id);
+        setSolicitacoes(solicitacoes.filter((s) => s.idSolicitacao !== id));
+        console.log("Solicitação excluída:", id);
       } catch (err) {
-        setError('Erro ao excluir solicitação.');
-        console.error('Erro:', err);
+        setError("Erro ao excluir solicitação.");
+        console.error("Erro:", err);
       }
     }
   };
@@ -74,39 +78,55 @@ export default function Dashboard() {
         status: editStatus,
         concluida: editConcluido,
       };
-      await api.put(`/solicitacao/${editSolicitacao.idSolicitacao}`, updatedSolicitacao);
-      setSolicitacoes(solicitacoes.map(s =>
-        s.idSolicitacao === editSolicitacao.idSolicitacao ? { ...s, ...updatedSolicitacao } : s
-      ));
+      await api.put(
+        `/solicitacao/${editSolicitacao.idSolicitacao}`,
+        updatedSolicitacao
+      );
+      setSolicitacoes(
+        solicitacoes.map((s) =>
+          s.idSolicitacao === editSolicitacao.idSolicitacao
+            ? { ...s, ...updatedSolicitacao }
+            : s
+        )
+      );
       setEditSolicitacao(null);
-      console.log('Solicitação editada:', updatedSolicitacao);
+      console.log("Solicitação editada:", updatedSolicitacao);
     } catch (err) {
-      setError('Erro ao editar solicitação.');
-      console.error('Erro:', err);
+      setError("Erro ao editar solicitação.");
+      console.error("Erro:", err);
     }
   };
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen p-8 bg-gray-100 text-black">
-        <h2 className="text-2xl font-bold mb-6">Painel do Administrador</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <Link href="/pages/solicitacao/nova" className="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Nova Solicitação
-        </Link>
-        <Link href="/pages/adm/usuario/novo" className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Criar Usuário
-        </Link>
-        <Link href="/pages/adm/usuario" className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Usuarios
-        </Link>
-        <Link href="/pages/adm/senha" className="mb-4 ml-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-          Alterar Senha
-        </Link>
+      <div className="min-h-screen bg-gray-100 text-black">
+        <Header/>
+        <div className="p-10 pt-19">
+          <h2 className="text-2xl font-bold mb-6">Painel do Administrador</h2>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <Link
+            href="/pages/solicitacao/nova"
+            className="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Nova Solicitação
+          </Link>
+          <Link
+            href="/pages/adm/usuario/novo"
+            className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Criar Usuário
+          </Link>
+          <Link
+            href="/pages/adm/usuario"
+            className="mb-4 ml-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Usuarios
+          </Link>
+        </div>
         {loading ? (
-          <p>Carregando solicitações...</p>
+          <p className="p-10">Carregando solicitações...</p>
         ) : solicitacoes.length === 0 ? (
-          <p>Nenhuma solicitação encontrada.</p>
+          <p className="p-10">Nenhuma solicitação encontrada.</p>
         ) : (
           <div className="bg-white rounded shadow-md">
             <table className="w-full">
@@ -123,12 +143,19 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {solicitacoes.map((solicitacao) => (
-                  <tr key={solicitacao.idSolicitacao} className={`border-t ${solicitacao.concluida ? 'bg-green-100' : ''}`}>
+                  <tr
+                    key={solicitacao.idSolicitacao}
+                    className={`border-t ${
+                      solicitacao.concluida ? "bg-green-100" : ""
+                    }`}
+                  >
                     <td className="p-2">{solicitacao.idSolicitacao}</td>
                     <td className="p-2">{solicitacao.titulo}</td>
                     <td className="p-2">{solicitacao.descricao}</td>
                     <td className="p-2">{solicitacao.status}</td>
-                    <td className="p-2">{new Date(solicitacao.data).toLocaleString()}</td>
+                    <td className="p-2">
+                      {new Date(solicitacao.data).toLocaleString()}
+                    </td>
                     <td className="p-2">{solicitacao.nomeUsuario}</td>
                     <td className="p-2">
                       <button
@@ -148,15 +175,19 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
+            
           </div>
         )}
         {editSolicitacao && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded shadow-md max-w-md w-full">
-              <h3 className="text-xl font-bold mb-4">Editar Solicitação</h3>
+          <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded shadow-2xl shadow-black max-w-md w-full">
+              <h3 className="text-xl font-bold mb-4 text-[#1e73be]">Editar Solicitação</h3>
               <form onSubmit={handleEditSubmit}>
                 <div className="mb-4">
-                  <label htmlFor="editTitulo" className="block text-sm font-medium mb-1">
+                  <label
+                    htmlFor="editTitulo"
+                    className="block text-sm font-medium mb-1"
+                  >
                     Título
                   </label>
                   <input
@@ -169,7 +200,10 @@ export default function Dashboard() {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="editDescricao" className="block text-sm font-medium mb-1">
+                  <label
+                    htmlFor="editDescricao"
+                    className="block text-sm font-medium mb-1"
+                  >
                     Descrição
                   </label>
                   <textarea
@@ -181,13 +215,20 @@ export default function Dashboard() {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="editStatus" className="block text-sm font-medium mb-1">
+                  <label
+                    htmlFor="editStatus"
+                    className="block text-sm font-medium mb-1"
+                  >
                     Status
                   </label>
                   <select
                     id="editStatus"
                     value={editStatus}
-                    onChange={(e) => setEditStatus(e.target.value as 'NORMAL' | 'MEDIO' | 'URGENTE')}
+                    onChange={(e) =>
+                      setEditStatus(
+                        e.target.value as "NORMAL" | "MEDIO" | "URGENTE"
+                      )
+                    }
                     className="w-full p-2 border rounded"
                   >
                     <option value="NORMAL">Normal</option>
@@ -195,13 +236,14 @@ export default function Dashboard() {
                     <option value="URGENTE">Urgente</option>
                   </select>
                 </div>
-                <div>
-                  CONCLUIDA? <input
-                        type="checkbox"
-                        checked={editConcluido}
-                        onChange={(e) => setEditConcluido(e.target.checked)}
-                        className="h-5 w-5"
-                      />
+                <div className="flex gap-2">
+                  <h1>CONCLUIDA?</h1>
+                  <input
+                    type="checkbox"
+                    checked={editConcluido}
+                    onChange={(e) => setEditConcluido(e.target.checked)}
+                    className="h-5 w-5"
+                  />
                 </div>
                 <div className="flex justify-end">
                   <button
@@ -222,6 +264,7 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+        <Footer/>
       </div>
     </ProtectedRoute>
   );

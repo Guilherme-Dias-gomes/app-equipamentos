@@ -1,7 +1,10 @@
 "use client";
 
+import Footer from "@/app/components/footer/page";
+import Header from "@/app/components/header/page";
 import ProtectedRoute from "@/app/components/ProtectedRoute/page";
 import api from "@/app/lib/axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Users {
@@ -70,10 +73,12 @@ export default function Usuarios() {
 
   return (
     <ProtectedRoute>
-      <div className="text-black">
-        <div className="bg-white rounded shadow-md ">
-          <table className="w-full ">
-            <thead>
+      <div className=" min-h-screen bg-gray-100 text-black flex flex-col">
+        <Header/>
+        <div className="bg-white rounded shadow-md pt-19 h-full">
+          <h2 className="text-2xl font-bold mb-6">Gerenciar Usuários</h2>
+          <table className="w-full">
+            <thead className="">
               <tr className="bg-gray-200">
                 <th className="p-2 text-left">ID</th>
                 <th className="p-2 text-left">Nome</th>
@@ -103,6 +108,7 @@ export default function Usuarios() {
                 </tr>
               ))}
             </tbody>
+            <Link href={'/pages/adm/dashboard'}>Voltar</Link>
           </table>
         </div>
         
@@ -143,6 +149,7 @@ export default function Usuarios() {
             </div>
           </div>
         )}
+        <Footer/>
       </div>
     </ProtectedRoute>
   );
