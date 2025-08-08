@@ -41,7 +41,7 @@ export default function Usuarios() {
   const handleDelete = async (id: number) => {
     if (confirm("Tem certeza que deseja excluir este usuário?")) {
       try {
-        await api.delete(`/auth/users/${id}/senha`);
+        await api.delete(`/users/${id}`);
         setUsers(users.filter((s) => s.id !== id));
         console.log("Usuário excluída:", id);
       } catch (err) {
@@ -73,22 +73,26 @@ export default function Usuarios() {
 
   return (
     <ProtectedRoute>
-      <div className="bg-gray-100 text-black flex flex-col">
+      <div className="text-black flex flex-col">
         <Header/>
-        <div className="bg-white pt-19 h-screen p-1">
-          <h2 className="text-2xl font-bold mb-6">Gerenciar Usuários</h2>
-          <table className="w-full">
+        <div className="bg-white pt-19 h-screen p-20">
+          <div className="flex justify-between text-center">
+            <h2 className="text-4xl font-bold mb-6">Gerenciar Usuários</h2>
+            <Link href={'/pages/adm/dashboard'} className="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 m-5">Voltar</Link>
+          </div>
+          
+          <table className="w-full border-2 shadow-2xl shadow-black">
             <thead className="">
               <tr className="bg-gray-200">
-                <th className="p-2 text-left">ID</th>
-                <th className="p-2 text-left">Nome</th>
-                <th className="p-2 text-left">setor</th>
-                <th className="p-2 text-left">Ações</th>
+                <th className="p-2 ">ID</th>
+                <th className="p-2 ">Nome</th>
+                <th className="p-2 ">setor</th>
+                <th className="p-2 ">Ações</th>
               </tr>
             </thead>
             <tbody>
               {users.map((users) => (
-                <tr>
+                <tr className="text-center hover:border hover:bg-[#1e73be]/10">
                   <td className="p-2">{users.id}</td>
                   <td className="p-2">{users.nome}</td>
                   <td className="p-2">{users.setor}</td>
@@ -109,7 +113,6 @@ export default function Usuarios() {
                 </tr>
               ))}
             </tbody>
-            <Link href={'/pages/adm/dashboard'}>Voltar</Link>
           </table>
         </div>
         

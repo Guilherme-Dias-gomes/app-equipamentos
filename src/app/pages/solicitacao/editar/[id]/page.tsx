@@ -15,9 +15,8 @@ export default function EditarSolicitacao() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aqui você adicionará a chamada ao PUT /solicitacao/{id}
-    console.log({ id, titulo, descricao, status });
-    router.push('/admin/dashboard');
+    
+    router.push('/pages/adm/dashboard');
   };
 
   return (

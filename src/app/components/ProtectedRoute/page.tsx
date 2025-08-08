@@ -6,11 +6,12 @@ import { jwtDecode } from 'jwt-decode';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: string; // Role necessária, ex.: 'ROLE_ADMIN' ou 'ROLE_USER'
+  requiredRole?: string; // Role necessária, ex.: 'ADMIN' ou 'USER'
 }
 
 interface JwtPayload {
-  role: string; 
+  role?: string; // Role codificada no token, ex.: 'ADMIN' ou 'USER'
+  roles?: string[]; // Para suportar arrays de roles, caso o token use 'roles'
 }
 
 export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
@@ -20,22 +21,32 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
 
   useEffect(() => {
     const checkAuth = () => {
+      console.log('Iniciando verificação de autenticação para:', pathname, 'RequiredRole:', requiredRole);
+
       const token = localStorage.getItem('token');
       
       // Se não houver token, redireciona para login
       if (!token) {
-        router.push(`/pages/login`);
+        console.log('Nenhum token encontrado, redirecionando para /pages/login');
+        router.push('/pages/login');
         return;
       }
 
-      // Se a rota exige uma role específica, verifica o token
+      // Verifica se a rota exige uma role específica
       if (requiredRole) {
+        console.log('Verificando role necessária:', requiredRole);
         try {
-          const decoded: JwtPayload = jwtDecode(token); // Usa jwtDecode diretamente
-          const userRole = decoded.role; // Ajuste conforme a estrutura do seu token
+          const decoded: JwtPayload = jwtDecode(token);
+          console.log('Token decodificado:', decoded);
 
-          if (userRole !== requiredRole) {
-            // Se a role não corresponder, redireciona para uma página de erro ou login
+          // Extrai a role do token (suporta 'role' ou 'roles')
+          const userRole = decoded.role || (decoded.roles && decoded.roles[0]) || '';
+          const normalizedUserRole = userRole.replace('ROLE_', ''); // Remove prefixo 'ROLE_' se existir
+          console.log('Role do usuário:', normalizedUserRole, 'Role necessária:', requiredRole);
+
+          // Verifica se a role do usuário corresponde à role necessária
+          if (normalizedUserRole !== requiredRole) {
+            console.log('Role não autorizada, redirecionando para /unauthorized');
             router.push('/unauthorized');
             return;
           }
@@ -44,6 +55,8 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
           router.push('/pages/login');
           return;
         }
+      } else {
+        console.log('Nenhuma role específica exigida para:', pathname);
       }
 
       setIsLoading(false);

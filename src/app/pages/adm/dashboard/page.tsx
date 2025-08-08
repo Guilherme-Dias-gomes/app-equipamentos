@@ -102,7 +102,7 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-100 text-black">
         <Header/>
         <div className="p-10 pt-19">
-          <h2 className="text-2xl font-bold mb-6">Painel do Administrador</h2>
+          <h2 className="text-4xl font-bold mb-6">Painel do Administrador</h2>
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <Link
             href="/pages/solicitacao/nova"
@@ -131,21 +131,21 @@ export default function Dashboard() {
           <div className="bg-white rounded shadow-md h-screen">
             <table className="w-full">
               <thead>
-                <tr className="bg-gray-200">
-                  <th className="p-2 text-left">ID</th>
-                  <th className="p-2 text-left">Título</th>
-                  <th className="p-2 text-left">Descrição</th>
-                  <th className="p-2 text-left">Status</th>
-                  <th className="p-2 text-left">Data</th>
-                  <th className="p-2 text-left">Nome</th>
-                  <th className="p-2 text-left">Ações</th>
+                <tr className="bg-gray-200 ">
+                  <th className="p-2">ID</th>
+                  <th className="p-2">Título</th>
+                  <th className="p-2">Descrição</th>
+                  <th className="p-2">Status</th>
+                  <th className="p-2">Data</th>
+                  <th className="p-2">Nome</th>
+                  <th className="p-2">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {solicitacoes.map((solicitacao) => (
                   <tr
                     key={solicitacao.idSolicitacao}
-                    className={`border-t ${
+                    className={`border-t text-center hover:border hover:bg-[#1e73be]/10 ${
                       solicitacao.concluida ? "bg-green-100" : ""
                     }`}
                   >
