@@ -128,7 +128,7 @@ export default function Dashboard() {
         ) : solicitacoes.length === 0 ? (
           <p className="p-10">Nenhuma solicitação encontrada.</p>
         ) : (
-          <div className="bg-white rounded shadow-md">
+          <div className="bg-white rounded shadow-md h-screen">
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-200">

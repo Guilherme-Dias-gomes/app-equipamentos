@@ -35,8 +35,8 @@ export default function NovoUsuario() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen flex items-center justify-center bg-gray-100 text-blackd text-black">
-        <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">Criar Novo Usuário</h2>
+        <div className="bg-white p-8 rounded shadow-2xl shadow-black w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#1e73be]">Criar Novo Usuário</h2>
           {error && <p className="text-red-500 mb-4">{error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
