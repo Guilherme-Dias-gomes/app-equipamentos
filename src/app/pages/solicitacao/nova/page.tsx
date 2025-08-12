@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ProtectedRoute from '../../../components/ProtectedRoute/page';
+import ProtectedRoute from '../../../components/ProtectedRoute/ProtectedRoute';
 import api from '@/app/lib/axios';
 import { jwtDecode } from 'jwt-decode';
 

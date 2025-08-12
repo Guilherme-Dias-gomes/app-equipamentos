@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import ProtectedRoute from '../../../../../components/ProtectedRoute/page';
+import ProtectedRoute from '../../../../../components/ProtectedRoute/ProtectedRoute';
 
 export default function AlterarSenhaUsuario() {
   const [novaSenha, setNovaSenha] = useState('');

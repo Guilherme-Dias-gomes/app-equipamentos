@@ -2,7 +2,7 @@
 
 import Footer from "@/app/components/footer/page";
 import Header from "@/app/components/header/page";
-import ProtectedRoute from "@/app/components/ProtectedRoute/page";
+import ProtectedRoute from "@/app/components/ProtectedRoute/ProtectedRoute";
 import api from "@/app/lib/axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -78,6 +78,7 @@ export default function Usuarios() {
         <div className="bg-white pt-19 h-screen p-20">
           <div className="flex justify-between text-center">
             <h2 className="text-4xl font-bold mb-6">Gerenciar Usuários</h2>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <Link href={'/pages/adm/dashboard'} className="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 m-5">Voltar</Link>
           </div>
           
@@ -92,7 +93,9 @@ export default function Usuarios() {
             </thead>
             <tbody>
               {users.map((users) => (
-                <tr className="text-center hover:border hover:bg-[#1e73be]/10">
+                <tr
+                  key={users.id}
+                  className="text-center hover:border hover:bg-[#1e73be]/10">
                   <td className="p-2">{users.id}</td>
                   <td className="p-2">{users.nome}</td>
                   <td className="p-2">{users.setor}</td>

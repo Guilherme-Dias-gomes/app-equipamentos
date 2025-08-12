@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ProtectedRoute from '../../../../components/ProtectedRoute/page';
+import ProtectedRoute from '../../../../components/ProtectedRoute/ProtectedRoute';
 import api from '@/app/lib/axios';
 
 export default function NovoUsuario() {
@@ -17,7 +17,7 @@ export default function NovoUsuario() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await api.post('/auth/register', {
+      await api.post('/auth/register', {
         email,
         senha,
         nome,

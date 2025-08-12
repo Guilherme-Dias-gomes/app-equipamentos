@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import ProtectedRoute from '../../../../components/ProtectedRoute/page';
+import ProtectedRoute from '../../../../components/ProtectedRoute/ProtectedRoute';
 
 export default function EditarSolicitacao() {
   const [titulo, setTitulo] = useState('Notebook'); // Exemplo de dado inicial

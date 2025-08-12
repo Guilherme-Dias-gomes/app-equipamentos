@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import api from "@/app/lib/axios";
-import ProtectedRoute from "@/app/components/ProtectedRoute/page";
+import ProtectedRoute from "@/app/components/ProtectedRoute/ProtectedRoute";
 import Header from "@/app/components/header/page";
 import Footer from "@/app/components/footer/page";
 
